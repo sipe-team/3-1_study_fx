@@ -15,7 +15,7 @@ circleCalculation2 radius = (area, circumference)
 
 -- 피타고라스 정리
 pythagorean :: Double -> Double -> Double
-pythagorean a b = 
+pythagorean a b =
     let squareA = a ** 2
         squareB = b ** 2
     in sqrt $ squareA + squareB
@@ -40,9 +40,25 @@ fastExp2 x n =
         then y * y
         else y * y * x
 
+fibonacci :: Integer -> Integer
+fibonacci n =
+    let fib 0 = 1
+        fib 1 = 1
+        fib n' = fib (n'-1) + fib (n'-2)
+    in  fib n
+
+fibonacci2 :: Integer -> Integer
+fibonacci2 = fib
+    where
+        fib 0 = 1
+        fib 1 = 1
+        fib n' = fib (n'-1) + fib (n'-2)
+
 
 main :: IO ()
 main = do
     print $ circleCalculation 2
     print $ pythagorean 3 4
     print $ fastExp 3 4
+    print $ fibonacci 5
+    print $ fibonacci2 5
