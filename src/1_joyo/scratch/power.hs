@@ -6,3 +6,6 @@ power x p
     | otherwise = n * n * x
     where
         n = power x (div p 2)
+
+main :: IO ()
+main = print $ power 2 10
