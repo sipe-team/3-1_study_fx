@@ -68,3 +68,65 @@ addOne (x:xs) = (x+1) : addOne xs
 * 함수형 프로그래밍의 불변성 원칙 구현
 * 재귀 함수 구현에 필수적
 * 효율적인 리스트 조작을 위한 핵심 도구
+
+
+# Haskell의 : (cons) 연산자 공백 규칙
+
+## 패턴 매칭에서의 사용
+
+패턴 매칭에서는 공백이 필요하지 않습니다.
+
+```haskell
+-- 올바른 패턴 매칭 예시
+insertIn x (y:ys) n = ...
+head (x:xs) = x
+tail (x:xs) = xs
+sum (x:xs) = x + sum xs
+```
+
+## 리스트 구성(Construction)에서의 사용
+
+리스트를 구성할 때는 `:` 연산자 양쪽에 공백이 필요합니다.
+
+```haskell
+-- 올바른 리스트 구성 예시
+y : insertIn x ys (n-1)
+1 : [2,3,4]
+'a' : "bc"
+
+-- 잘못된 예시 (컴파일 오류 가능성)
+y:insertIn x ys (n-1)
+1:[2,3,4]
+```
+
+## 공백 규칙이 필요한 이유
+
+1. 모호성 방지
+   - 공백이 없으면 `:function`을 함수 이름의 일부로 해석할 수 있음
+   - Haskell은 함수나 변수 이름에 `:`을 포함할 수 있음
+
+2. 가독성 향상
+   - 연산자와 피연산자를 시각적으로 명확히 구분
+   - 코드 유지보수가 용이
+
+## 실제 사용 예시
+
+```haskell
+-- 완성된 insertIn 함수 예시
+insertIn :: a -> [a] -> Int -> [a]
+insertIn x ys 1 = x : ys                    -- 리스트 구성: 공백 필요
+insertIn x (y:ys) n = y : insertIn x ys (n-1)  -- 패턴 매칭은 공백 불필요
+insertIn x [] _ = [x]
+
+-- 다른 일반적인 예시들
+map f (x:xs) = f x : map f xs    -- 패턴 매칭과 리스트 구성 혼합
+filter p (x:xs)                  -- 패턴 매칭
+  | p x = x : filter p xs        -- 리스트 구성
+  | otherwise = filter p xs
+```
+
+## 정리
+
+- 패턴 매칭: 공백 불필요 `(x:xs)`
+- 리스트 구성: 공백 필요 `x : xs`
+- 문맥에 따라 같은 `:` 연산자라도 다른 공백 규칙 적용
