@@ -4,6 +4,7 @@
 ------
 {-
 
+Title   | equal
 Problem | Implement a function eql :: [Int] -> [Int] -> Bool that tells whether two lists of integers are the same.
 Example | eql [1,2,3] [1,2,3] = True
         | eql [1,2,3] [1,2,4] = False

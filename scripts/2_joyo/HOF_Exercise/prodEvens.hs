@@ -4,7 +4,7 @@
 ------
 {-
 
-Title   | product
+Title   | prodEvens
 Problem | Implement a function prod :: [Int] -> Int that returns the product of a list of integers.
 Example | prod [2,10,5] = 100
         | prod [3,1,2,4] = 24
