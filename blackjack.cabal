@@ -25,8 +25,13 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Model.Card
+      Model.Hand
+      Model.GameState
+      Calculation.GameLogic
+      Action.IOActions
   other-modules:
+      Lib
       Paths_blackjack
   autogen-modules:
       Paths_blackjack
@@ -36,6 +41,7 @@ library
   build-depends:
       base >=4.7 && <5
     , random
+    , random-shuffle
   default-language: Haskell2010
 
 executable blackjack-exe
@@ -51,6 +57,7 @@ executable blackjack-exe
       base >=4.7 && <5
     , blackjack
     , random
+    , random-shuffle
   default-language: Haskell2010
 
 test-suite blackjack-test
@@ -66,5 +73,4 @@ test-suite blackjack-test
   build-depends:
       base >=4.7 && <5
     , blackjack
-    , random
   default-language: Haskell2010

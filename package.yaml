@@ -19,9 +19,6 @@ extra-source-files:
 # common to point users to the README.md file.
 description:         Please see the README on GitHub at <https://github.com/githubuser/blackjack#readme>
 
-dependencies:
-- base >= 4.7 && < 5
-- random
 
 ghc-options:
 - -Wall
@@ -36,6 +33,16 @@ ghc-options:
 
 library:
   source-dirs: src
+  exposed-modules:
+    - Model.Card
+    - Model.Hand
+    - Model.GameState
+    - Calculation.GameLogic
+    - Action.IOActions
+  dependencies:
+    - base >= 4.7 && < 5
+    - random
+    - random-shuffle
 
 executables:
   blackjack-exe:
@@ -47,7 +54,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - blackjack
+    - base >= 4.7 && < 5
     - random
+    - random-shuffle
 
 tests:
   blackjack-test:
@@ -59,3 +68,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - blackjack
+    - base >= 4.7 && < 5
