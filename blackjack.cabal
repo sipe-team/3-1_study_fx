@@ -25,7 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Decks
+      InGame
   other-modules:
       Paths_blackjack
   autogen-modules:
