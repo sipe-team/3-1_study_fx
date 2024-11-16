@@ -1,4 +1,4 @@
-# Functor
+# Functor에 대하여
 
 ## 1. Functor란?
 
@@ -34,25 +34,35 @@ example3 = fmap (+1) Nothing   -- 결과: Nothing
 
 이처럼 `fmap`을 사용해 `Maybe` 타입 내부의 값을 안전하게 변환할 수 있습니다.
 
-#### Kotlin에서의 Nullable 처리
+#### Kotlin에서의 Maybe Functor
 
-Kotlin에서는 `Nullable` 타입(`?`)이 `Maybe`와 유사한 역할을 합니다. `map` 함수를 사용하는 대신 `?.`을 통해 값이 존재할 경우에만 연산을 수행합니다.
-
-예를 들어:
+Kotlin의 표준 라이브러리에는 하스켈의 `Maybe`와 완전히 동일한 Functor가 없습니다. Kotlin의 `Nullable` 타입은 비슷해 보이지만 실제로는 Functor의 법칙을 완벽히 만족하지 않습니다. 대신 Maybe Functor를 직접 구현하여 사용할 수 있습니다:
 
 ```kotlin
-val maybeValue: Int? = 3
-val result = maybeValue?.let { it + 1 }  // 결과: 4
+sealed class Maybe<out A> {
+    data class Just<out A>(val value: A) : Maybe<A>()
+    object Nothing : Maybe<Nothing>()
 
-val nothingValue: Int? = null
-val result2 = nothingValue?.let { it + 1 }  // 결과: null
-```
+    // Functor의 map 구현
+    inline fun <B> map(f: (A) -> B): Maybe<B> = when (this) {
+        is Just -> Just(f(value))
+        is Nothing -> Nothing
+    }
+}
 
-`let` 함수와 `?.` 연산자를 통해 값이 존재하는 경우에만 안전하게 변환을 수행할 수 있습니다.
+// 사용 예시
+fun main() {
+    val maybeValue = Maybe.Just(3)
+    val result = maybeValue.map { it + 1 }  // 결과: Just(4)
+
+    val nothingValue = Maybe.Nothing
+    val result2 = nothingValue.map { it + 1 }  // 결과: Nothing
+}
 
 #### JavaScript에서의 Maybe
 
-JavaScript에는 기본적으로 `Maybe` 타입이 없지만, `Maybe` Functor를 직접 만들어볼 수 있습니다. 이를 통해 값의 존재 여부에 따른 처리를 더 안전하게 할 수 있습니다.
+JavaScript도 기본적으로 `Maybe` 타입이 없지만, `Maybe` Functor를 직접 만들어볼 수 있습니다.
+이를 통해 값의 존재 여부에 따른 처리를 더 안전하게 할 수 있습니다.
 
 ```javascript
 class Maybe {
