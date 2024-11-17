@@ -7,8 +7,8 @@ module Blackjack
 
 
 import System.Random
-import Control.Monad (when)
 import Data.List (sortBy, intercalate)
+import Control.Monad (when)
 
 -- 카드 타입 정의
 data Suit = Hearts | Diamonds | Clubs | Spades deriving (Show, Eq)
@@ -50,10 +50,10 @@ fullDeck = [Card rank suit | suit <- [Hearts, Diamonds, Clubs, Spades],
 
 -- 덱 섞기
 shuffleDeck :: [Card] -> IO [Card]
-shuffleDeck deck = do
+shuffleDeck cards = do
     gen <- newStdGen
     return $ map snd $ sortBy (\(a,_) (b,_) -> compare a b) 
-           $ zip (randoms gen :: [Float]) deck
+           $ zip (randoms gen :: [Float]) cards
 
 -- 초기 게임 상태 설정
 initGame :: IO GameState
@@ -65,7 +65,8 @@ initGame = do
 
 -- 카드 한 장 뽑기
 drawCard :: GameState -> (Card, GameState)
-drawCard gs@(GameState ph dh (c:cs)) = (c, gs { deck = cs })
+drawCard gs@(GameState _ _ (c:cs)) = (c, gs { deck = cs })
+drawCard gs@(GameState _ _ []) = error "No cards left in deck"
 
 -- 핸드 출력
 showHand :: String -> Hand -> IO ()
@@ -130,7 +131,7 @@ determineWinner gs = do
 -- 메인 게임 루프
 playGame :: IO ()
 playGame = do
-    putStrLn "Welcome to Haskell Blackjack!"
+    putStrLn "블랙잭 게임에 참여하신 걸 환영합니다!"
     gs <- initGame
     finalPlayerState <- playerTurn gs
     if handValue (playerHand finalPlayerState) <= 21
@@ -139,7 +140,7 @@ playGame = do
             determineWinner finalState
         else
             determineWinner finalPlayerState
-    putStr "Play again? (y/n): "
+    putStrLn "\nPlay again? (y/n): "
     choice <- getLine
     when (choice == "y") playGame
 
